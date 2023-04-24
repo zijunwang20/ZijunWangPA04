@@ -1,0 +1,112 @@
+<h1> Transactions for <%= user.username %> </h1>
+<p>Here is your list of things to do!</p>
+<table class="table table-bordered">
+  <body>
+    <tr>
+      <td><a href='/transaction/byCategory' class="btn btn-sm btn-primary">group by category</a></td>
+      <td><a href='/transactions?sortBy=category' class="btn btn-sm btn-primary">sort by category</a></td>
+      <td><a href='/transactions?sortBy=amount' class="btn btn-sm btn-primary">sort by amount</a></td>
+      <td><a href='/transactions?sortBy=description' class="btn btn-sm btn-primary">sort by description</a></td>
+      <td><a href='/transactions?sortBy=date' class="btn btn-sm btn-primary">sort by date</a></td>
+    </tr>
+  </body>
+</table>
+<% if (transactions && transactions.length > 0) { %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>description</th>
+        <th>amount</th>
+        <th>category</th>
+        <th>date</th>
+        <th>delete</th>
+        <th>edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const transaction of transactions) { %>
+        <tr>
+          <td><%= transaction.description %></td>
+          <td><%= transaction.amount %></td>
+          <td><%= transaction.category %></td>
+          <td><%= new Date(transaction.date).toDateString() %></td>
+          <td>
+            <a href="/transactions/remove/<%= transaction._id %>">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+          <td>
+            <a href="/transactions/edit/<%= transaction._id %>">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% } else { %>
+  <div class="alert alert-warning">
+    No transaction records!
+  </div>
+<% } %>
+<h1> Add a New Transaction </h1>
+<div class="card mt-3">
+  <div class="card-body">
+    <form action="/transactions" method="post" id="transaction-form">
+      <div class="mb-3">
+        <label for="description" class="form-label">Decription</label>
+        <input type="text" class="form-control" id="description" name="description" />
+      </div>
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="text" class="form-control" id="amount" name="amount" />
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input type="text" class="form-control" id="category" name="category" />
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" name="date" />
+      </div>
+      <div class="mb-3">
+        <button type="button" class="btn btn-sm btn-primary" id="store-button">Store</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  window.onload = () => {
+    const storeButtonDom = document.getElementById("store-button");
+    storeButtonDom.addEventListener('click', () => {
+      const description = document.getElementById('description').value;
+      const amount = document.getElementById('amount').value;
+      const category = document.getElementById('category').value;
+      const date = document.getElementById('date').value;
+      if (!description) {
+        alert('description cannot be empty!');
+        return;
+      }
+      if (!amount) {
+        alert('amount cannot be empty!');
+        return;
+      } else {
+        if (isNaN(parseFloat(amount))) {
+          alert('amount must be a number');
+          return;
+        }
+      }
+      if (!category) {
+        alert('category cannot be empty!');
+        return;
+      }
+      if (!date) {
+        alert('date cannot be empty!');
+        return;
+      }
+
+      const transactionForm = document.getElementById('transaction-form');
+      transactionForm.submit();
+    });
+  }
+</script>

@@ -1,0 +1,32 @@
+<% if (transaction) { %>
+  <div class="card mt-3">
+    <div class="card-header">Edit transaction</div>
+    <div class="card-body">
+      <form action="/transactions/edit/<%= transaction._id %>" method="post">
+        <div class="mb-3">
+          <label for="description" class="form-label">Decription</label>
+          <input type="text" class="form-control" name="description" value="<%= transaction.description %>" />
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" name="amount" value="<%= transaction.amount %>" />
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <input type="text" class="form-control" name="category" value="<%= transaction.category %>" />
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" name="date" value="<%= transaction.date %>" />
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-sm btn-primary">Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<% } else { %>
+  <div class="alert alert-warning">
+    Not found the transaction with the given transaction id.
+  </div>
+<% } %>
