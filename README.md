@@ -1,4 +1,3 @@
-Run the app
-enter：
-npm install
-npm start
+# to run the firstapp
+    npm install
+    npm start
